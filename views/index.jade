@@ -1,0 +1,50 @@
+extends layout
+
+block content
+  #lobby
+    h1=title
+    label(for="username") 用户名 ： 
+    input#username(placeholder="玩家名 如 勇敢的死基佬")
+    select
+      option(value="blue") 基佬蓝
+      option(value="red") 基佬红
+      option(value="green") 基佬绿
+      option(value="purple") 基佬紫
+      option(value="pink") 基佬粉
+      option(value="white") 基佬白
+      option(value="orange") 基佬橙
+      option(value="black") 基佬黑
+      option(value="grey") 基佬灰
+      option(value="yellow") 基佬黄
+    span#current_color
+    input#register(type="button" value="注册")
+    p
+      |玩家名 ： 
+      span#display_name 匿名的死基佬
+    p 房间列表
+    input#refresh(type="button" value="刷新")
+    #roomList
+      ul
+    input#join(type="button" value="加入")
+    #create_room
+    label(for="new_room_name") 房间名 ： 
+    input#new_room_name(type="text" placeholder="房间名")
+    input#create(type="button" value="创建")
+  #game
+    p#room_name 
+      span wsxxdwd
+      input#back(type="button" value="退出房间")
+      input#ready(type="button" value="准备")
+    #canvas
+      canvas#background(width="500px" height="500px")
+      canvas#player_canvas(width="500px" height="500px")
+      canvas#ohter_player_canvas(width="500px" height="500px")
+      canvas#object_canvas(width="500px" height="500px")
+    ul#player_list
+      li 玩家列表
+      li
+        span.player_name wsxxdwd
+        span.player_status.unready wait
+    #msg_box
+      span 消息
+      

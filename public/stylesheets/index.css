@@ -1,0 +1,95 @@
+input{
+  margin-right: 10px;
+}
+#current_color{
+  display: inline-block;
+  width:20px;
+  height:20px;
+  margin: 0 10px;
+  vertical-align: top;
+  background: blue;
+}
+
+#lobby{
+  display: block;
+  width: 500px;
+  margin: auto;
+}
+#roomList{
+  border: 1px solid #000;
+  min-height: 100px;
+}
+
+#roomList ul li span{
+  margin-right: 10px;
+}
+.select{
+  color:red;
+}
+#game{
+  position: relative;
+  display: none;
+  margin: auto;
+  width: 1000px;
+}
+#canvas{
+  position: relative;
+  margin: auto;
+  width: 500px;
+  height:500px;
+  border:1px solid #000;
+}
+canvas{
+  position: absolute;
+  left:0;
+  top:0;
+}
+#room_name span{
+  margin-right: 10px
+}
+#player_list{
+  position: absolute;
+  left:0;
+  top:35px;
+  width: 200px;
+  height:500px;
+  border:1px solid #000;
+  padding: 0 5px;
+  margin:0;
+}
+#player_list li{  
+  list-style: none;
+  margin:5px;
+}
+#player_list li span{
+  margin-right: 5px;
+}  
+.wait{
+  color:yellow;
+}
+.ready{
+  color:blue;
+}
+.alive{
+  color:green;
+}
+.dead{
+  color:red;
+}
+#msg_box{
+  position: absolute;
+  right:0;
+  top:35px;
+  width: 200px;
+  height:500px;
+  border:1px solid #000;
+  padding:0 5px;
+  overflow-y: scroll;
+}
+#msg_box span{
+  margin: 5px;
+}
+.from,.content{
+  max-width: 200px;
+  word-break: break-all;
+}
