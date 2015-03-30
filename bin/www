@@ -7,7 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('Alvira:server');
 var http = require('http');
-var GameServer = require("../gameServer")
+var GameServer = require("../server/gameServer");
 /**
  * Get port from environment and store in Express.
  */

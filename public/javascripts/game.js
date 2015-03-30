@@ -30,18 +30,35 @@ function Game(){
       alert("无法加入游戏")
     }
   }
+  this.ready = function(){
+    this.socket.emit("ready_game",{roomId:_this.roomId,playerId:_this.playerId});
+  }
+  this.start = function(){
+    if(this.currentRoom.holder.id == this.playerId)
+      if(this.currentRoom.status == "ready")
+        this.socket.emit("start_game",{roomId:_this.roomId,playerId:_this.playerId});
+      else
+        alert("玩家未全部准备就绪")
+  }
+  this.playerAction = function(action){
+    if(action == "chahua"){
+      this.socket.emit("action",{action:"chahua",playerId:this.playerId,roomId:this.currentRoom.id});
+    }else{
+      this.socket.emit("action",{action:"direction",direction:action,playerId:this.playerId,roomId:this.currentRoom.id});
+    }
+  }
   this.leftRoom = function(){
-    if(this.playerId && this.roomId && this.gameStatus != "free"){
-      this.socket.emit("left_game",{roomId:_this.roomId,playerId:_this.playerId});
+    if(this.playerId && this.roomId){
+      this.socket.emit("left_game",{roomId:_this.roomId,playerId:_this.playerId,roomId:this.currentRoom.id});
       this.roomId = -1;
-      this.gameStatus = "free"
+      this.gameStatus = "free";
+      this.refreshRoomList();
       $("#roomList ul li").removeClass("select");
-      console.log(1)
     }
   }
   this.refreshRoomList = function(){
     this.socket.emit("roomList",{});
-  }
+  };
   this.connectSever = function(){
     this.socket = io();
     return true;
@@ -59,11 +76,7 @@ function Game(){
       }
     });
     this.socket.on("roomList",function(data){
-      var html = "";
-      for(var i in data.list){
-        html += '<li class="" data-id="'+data.list[i].id+'"><span>'+data.list[i].name+'</span><span>'+data.list[i].players.length+'/4</span></li>'
-      }
-      $("#roomList ul").html(html);
+      showRoomList(data.list)
     });
     this.socket.on("create_room_response",function(data){
       if(data.id){
@@ -84,13 +97,32 @@ function Game(){
       }
     });
     this.socket.on("update_room_info",function(data){
-      console.log("update")
       _this.currentRoom = data.room;
       showPlayerList();
     });
     this.socket.on("room_msg",function(data){
-      console.log("msg")
       addMsg(data);
+    });
+    this.socket.on("game_start",function(data){
+      _this.gameStatus = "play";
+      console.log("zybsb");//你看不到我你看不到我
+    });
+    this.socket.on("game_stop",function(data){
+      _this.gameStatus = "wait";
+    });
+    this.socket.on("room_close",function(data){
+      showLobby();
+      _this.roomId = -1;
+      _this.gameStatus = "free";
+      $("#roomList ul li").removeClass("select");
+      _this.refreshRoomList();
+    });
+    this.socket.on("gameData",function(data){
+      drawSnakes(data.snakes);
+      drawFoods(data.foods);
+    });
+    this.socket.on("chahua",function(data){
+      showChahua();
     });
   }
   this.init = function(){

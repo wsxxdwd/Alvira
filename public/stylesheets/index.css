@@ -19,7 +19,10 @@ input{
   border: 1px solid #000;
   min-height: 100px;
 }
-
+#roomList ul li{
+  list-style: none;
+  cursor: pointer;
+}
 #roomList ul li span{
   margin-right: 10px;
 }
@@ -44,8 +47,18 @@ canvas{
   left:0;
   top:0;
 }
+#chahua{
+  display: none;
+  margin: auto;
+  width: 333px;
+  height: 500px;
+  background: url(../images/chahua.jpg);
+}
 #room_name span{
   margin-right: 10px
+}
+#start{
+  display: none;
 }
 #player_list{
   position: absolute;
