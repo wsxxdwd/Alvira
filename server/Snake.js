@@ -78,13 +78,14 @@ Snake.prototype.eat = function(foods){
 }
 Snake.prototype.checkStrike = function(snake,selfHead){
   var head = this.body[0];
-  for(var i in snake){
-    if(selfHead[0] == head[0] && selfHead[1] == head[1]){
-      return {status:0};//忽略判断自己的头部
-    }
+  for(var i = 0 ; i < snake.length - 1 ; i ++){
     if(head[0] == snake[i][0] && head[1] == snake[i][1]){
-      this.status = "dead";
-      return {status:1,playerId:this.playerId,msg:"撞击身体而死"};
+      if(snake[i][0] == selfHead[0] && snake[i][1] == selfHead[1]){
+        continue;
+      }else{
+        this.status = "dead";
+        return {status:1,playerId:this.playerId,msg:"撞击身体而死"};
+      }
     }
   }
   return {status:0};

@@ -40,13 +40,14 @@ Room.prototype.changeDirection = function(playerId,direction){
   for(var i in this.players){
     if(this.players[i].id == playerId){
       if(this.snakes[i].status == "alive"){
-        if((direction == "left" && this.snakes[i].direction == "right") ||
-           (direction == "right" && this.snakes[i].direction == "left") ||
-           (direction == "up" && this.snakes[i].direction == "down") ||
-           (direction == "down" && this.snakes[i].direction == "up") 
+        if((this.snakes[i].body[1][0] == (this.snakes[i].body[0][0] + 1) && this.snakes[i].direction == "right") ||
+           (this.snakes[i].body[1][0] == (this.snakes[i].body[0][0] - 1) && this.snakes[i].direction == "left") ||
+           (this.snakes[i].body[1][1] == (this.snakes[i].body[0][1] + 1) && this.snakes[i].direction == "down") ||
+           (this.snakes[i].body[1][1] == (this.snakes[i].body[0][1] - 1) && this.snakes[i].direction == "up") 
           )
           return false;
         this.snakes[i].direction = direction;
+        return true;
         //snakes的数组序列和players的一一对应
       }
     }
@@ -81,10 +82,10 @@ Room.prototype.tick = function(game){
             var selfHead = [-1,-1];
           }
           var strikeInfo = this.snakes[i].checkStrike(this.snakes[j].body,selfHead);
+          if(strikeInfo.status){
+            game.roomBroadcast(0,"room_msg",{from:"系统",content:"玩家"+game.$player(strikeInfo.playerId).name+strikeInfo.msg},this.id);
+          }
         }
-      }
-      if(strikeInfo.status){
-        game.roomBroadcast(0,"room_msg",{from:"系统",content:"玩家"+game.$player(strikeInfo.playerId).name+strikeInfo.msg},this.id);
       }
       //吃个痛快
       this.snakes[i].eat(this.foods);
