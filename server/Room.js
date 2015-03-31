@@ -87,14 +87,13 @@ Room.prototype.tick = function(game){
         game.roomBroadcast(0,"room_msg",{from:"系统",content:"玩家"+game.$player(strikeInfo.playerId).name+strikeInfo.msg},this.id);
       }
       //吃个痛快
-      var eatInfo = this.snakes[i].eat(this.foods);
+      this.snakes[i].eat(this.foods);
       //结束移动,判断是否需要增加蛇长
       this.snakes[i].endMove();
     }
   }
   //本回合移动完了补充食物
-  if(eatInfo)
-    this.createFood();
+  this.createFood();
   //判断游戏是否结束
   var alivePlayer = 0;
   var lastPlayer = false;

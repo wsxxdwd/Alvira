@@ -111,6 +111,7 @@ function Game(){
       _this.gameStatus = "wait";
     });
     this.socket.on("room_close",function(data){
+      alert("房间已关闭");
       showLobby();
       _this.roomId = -1;
       _this.gameStatus = "free";

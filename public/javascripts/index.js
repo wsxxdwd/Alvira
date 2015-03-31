@@ -127,13 +127,15 @@ function drawSnakes(snakes){
   context.clearRect(0,0,500,500);
   for(var i in snakes){
     var snake = snakes[i];
-    if(snake.playerId == game.playerId)
-      context.fillStyle = game.playerColor;
-    else
-      context.fillStyle = "red";
-    for(var j in snake.body){
-      var section = snake.body[j];
-      context.fillRect(section[0]*20,section[1]*20,20,20);
+    if(snake.status == "alive"){//不显示死蛇
+      if(snake.playerId == game.playerId)
+        context.fillStyle = game.playerColor;
+      else
+        context.fillStyle = "red";
+      for(var j in snake.body){
+        var section = snake.body[j];
+        context.fillRect(section[0]*20,section[1]*20,20,20);
+      }
     }
   }
 }
