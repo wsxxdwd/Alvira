@@ -91,14 +91,14 @@ function Game(){
         console.log("加入房间:"+data.room.name);
         _this.currentRoom = data.room;
         _this.gameStatus = "wait";
-        showGame();
+        showGame(_this);
       }else{
         alert(data.msg);
       }
     });
     this.socket.on("update_room_info",function(data){
       _this.currentRoom = data.room;
-      showPlayerList();
+      showPlayerList(_this);
     });
     this.socket.on("room_msg",function(data){
       addMsg(data);
@@ -112,14 +112,14 @@ function Game(){
     });
     this.socket.on("room_close",function(data){
       alert("房间已关闭");
-      showLobby();
+      showLobby(_this);
       _this.roomId = -1;
       _this.gameStatus = "free";
       $("#roomList ul li").removeClass("select");
       _this.refreshRoomList();
     });
     this.socket.on("gameData",function(data){
-      drawSnakes(data.snakes);
+      drawSnakes(data.snakes,_this);
       drawFoods(data.foods);
     });
     this.socket.on("chahua",function(data){

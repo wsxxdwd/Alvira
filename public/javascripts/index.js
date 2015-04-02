@@ -69,93 +69,92 @@ $(document).ready(function(){
         case 40: game.playerAction("down");break;
     }
   });
-  function showGame(){
-    $("#lobby").hide();
-    $("#game").show();
-    $("#room_name span").html(game.currentRoom.name);
-    if(game.currentRoom.holder.id == game.playerId){
-      $("#start").show();
-    }else{
-      $("#start").hide();
-    }
-    showPlayerList();
-    $("#msg_box").html("")
-  }
-  function showLobby(){
-    $("#lobby").show();
-    $("#game").hide();
-    game.refreshRoomList();
-  }
-  function showRoomList(list){
-     var html = "";
-      for(var i in list){
-        html += '<li class="" data-id="'+list[i].id+'"><span>'+list[i].name+'</span><span>'+list[i].players.length+'/'+list[i].maxPlayer+'</span></li>'
-      }
-      $("#roomList ul").html(html);
-  }
-  function drawBackground(){
-    var canvas = $('#background')[0];
-    var context = canvas.getContext('2d');
-    context.clearRect(0,0,500,500);
-    for(var i=1;i<25;i++){
-       context.moveTo(20*i,0);
-       context.lineTo(20*i,500);
-       context.moveTo(0,20*i);
-       context.lineTo(500,20*i);
-    }
-    context.stroke();  
-  }
-  function showPlayerList(){
-    var html = "<li>玩家列表:</li>";
-    if(game.currentRoom){
-      var players = game.currentRoom.players;
-      for(var i in players){
-        html += '<li><span class="player_name">'+players[i].name+'</span><span class="player_status '+players[i].status+'">'+players[i].status+'</span></li>'
-      }
-    }
-    $("#player_list").html(html);
-
-  }
-  function addMsg(data){
-    var html = '<div class="msg"><span class="from>'+data.from+'</div><div class="content">'+data.content+'</div></div>'
-    $("#msg_box").append(html);
-  }
-  function drawSnakes(snakes){
-    var canvas = $('#snake_canvas')[0];
-    var context = canvas.getContext('2d');
-    context.clearRect(0,0,500,500);
-    for(var i in snakes){
-      var snake = snakes[i];
-      if(snake.status == "alive"){//不显示死蛇
-        if(snake.playerId == game.playerId)
-          context.fillStyle = game.playerColor;
-        else
-          context.fillStyle = "red";
-        for(var j in snake.body){
-          var section = snake.body[j];
-          context.fillRect(section[0]*20,section[1]*20,20,20);
-        }
-      }
-    }
-  }
-  function drawFoods(foods){
-    var canvas = $('#object_canvas')[0];
-    var context = canvas.getContext('2d');
-    context.clearRect(0,0,500,500);
-    for(var i in foods){
-      context.fillStyle = "green";
-      context.fillRect(foods[i][0]*20,foods[i][1]*20,20,20);
-    }
-  }
-  function showChahua(){
-    if(!chahua){
-      chahua = true;
-      $("#chahua").show();
-      setTimeout(function(){
-        $("#chahua").hide();
-        chahua = false;
-      },500);
-    }
-  }
 });
+function showGame(game){
+  $("#lobby").hide();
+  $("#game").show();
+  $("#room_name span").html(game.currentRoom.name);
+  if(game.currentRoom.holder.id == game.playerId){
+    $("#start").show();
+  }else{
+    $("#start").hide();
+  }
+  showPlayerList(game);
+  $("#msg_box").html("")
+}
+function showLobby(game){
+  $("#lobby").show();
+  $("#game").hide();
+  game.refreshRoomList();
+}
+function showRoomList(list){
+   var html = "";
+    for(var i in list){
+      html += '<li class="" data-id="'+list[i].id+'"><span>'+list[i].name+'</span><span>'+list[i].players.length+'/'+list[i].maxPlayer+'</span></li>'
+    }
+    $("#roomList ul").html(html);
+}
+function drawBackground(){
+  var canvas = $('#background')[0];
+  var context = canvas.getContext('2d');
+  context.clearRect(0,0,500,500);
+  for(var i=1;i<25;i++){
+     context.moveTo(20*i,0);
+     context.lineTo(20*i,500);
+     context.moveTo(0,20*i);
+     context.lineTo(500,20*i);
+  }
+  context.stroke();  
+}
+function showPlayerList(game){
+  var html = "<li>玩家列表:</li>";
+  if(game.currentRoom){
+    var players = game.currentRoom.players;
+    for(var i in players){
+      html += '<li><span class="player_name">'+players[i].name+'</span><span class="player_status '+players[i].status+'">'+players[i].status+'</span></li>'
+    }
+  }
+  $("#player_list").html(html);
 
+}
+function addMsg(data){
+  var html = '<div class="msg"><span class="from>'+data.from+'</div><div class="content">'+data.content+'</div></div>'
+  $("#msg_box").append(html);
+}
+function drawSnakes(snakes,game){
+  var canvas = $('#snake_canvas')[0];
+  var context = canvas.getContext('2d');
+  context.clearRect(0,0,500,500);
+  for(var i in snakes){
+    var snake = snakes[i];
+    if(snake.status == "alive"){//不显示死蛇
+      if(snake.playerId == game.playerId)
+        context.fillStyle = game.playerColor;
+      else
+        context.fillStyle = "red";
+      for(var j in snake.body){
+        var section = snake.body[j];
+        context.fillRect(section[0]*20,section[1]*20,20,20);
+      }
+    }
+  }
+}
+function drawFoods(foods){
+  var canvas = $('#object_canvas')[0];
+  var context = canvas.getContext('2d');
+  context.clearRect(0,0,500,500);
+  for(var i in foods){
+    context.fillStyle = "green";
+    context.fillRect(foods[i][0]*20,foods[i][1]*20,20,20);
+  }
+}
+function showChahua(){
+  if(!chahua){
+    chahua = true;
+    $("#chahua").show();
+    setTimeout(function(){
+      $("#chahua").hide();
+      chahua = false;
+    },500);
+  }
+}
