@@ -122,14 +122,19 @@ function GameSever(io){
     if(!room){
       return {status:0,msg:"房间不存在"};
     }
-    room.stop(player.id,this);
-    for(var i in room.players){
-      if(data.playerId == room.players[i].id){
-        room.players.splice(i,1);
+    console.log("stop");
+    var stopInfo = room.stop(player.id,this);
+    if(stopInfo){
+      for(var i in room.players){
+        if(data.playerId == room.players[i].id){
+          room.players.splice(i,1);
+        }
       }
+      this.checkRoomStatus(data.roomId);
+      return {status:1,room:room};
+    }else{
+      return {status:0,msg:"房间已关闭"};
     }
-    this.checkRoomStatus(data.roomId);
-    return {status:1,room:room};
   }
   this.roomBroadcast = function(from,title,data,roomId){
     var room = this.$room(roomId);
@@ -169,8 +174,10 @@ function GameSever(io){
       });
       socket.on("left_game",function(data){
         var res = _this.leftGame(data,socket);
-        _this.roomBroadcast(data.playerId,"update_room_info",res,data.roomId);
-        _this.roomBroadcast(data.playerId,"room_msg",{from:"系统",content:"玩家 " + _this.$player(data.playerId).name + " 退出了游戏"},data.roomId);
+        if(res.status){//如果房间还存在
+          _this.roomBroadcast(data.playerId,"update_room_info",res,data.roomId);
+          _this.roomBroadcast(data.playerId,"room_msg",{from:"系统",content:"玩家 " + _this.$player(data.playerId).name + " 退出了游戏"},data.roomId);
+        }
       });
       socket.on("ready_game",function(data){
         //玩家准备,广播

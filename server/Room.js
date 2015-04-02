@@ -22,6 +22,12 @@ Room.prototype.start = function(game){
   return true;
 }
 Room.prototype.stop = function(playerId,game){
+  if(playerId == this.holder.id){
+    game.roomBroadcast(playerId,"room_close",{},this.id);//房间关闭信息
+    game.$delRoom(this.id);
+    console.log("房间关闭")
+    return 0;
+  }
   this.status = "wait";
   for(var i in this.players)
     this.players[i].status = "wait";
@@ -31,10 +37,7 @@ Room.prototype.stop = function(playerId,game){
   game.roomBroadcast(playerId,"game_stop",{},this.id);//通知改变玩家状态
   game.roomBroadcast(playerId,"update_room_info",{room:this},this.id);//通知改变房间信息
   game.roomBroadcast(0,"room_msg",{from:"系统",content:"游戏结束"},this.id);
-  if(playerId == this.holder.id){
-    game.roomBroadcast(playerId,"room_close",{},this.id);//房间关闭信息
-    game.$delRoom(this.id);
-  }
+  return 1;
 }
 Room.prototype.changeDirection = function(playerId,turn){
   for(var i in this.players){

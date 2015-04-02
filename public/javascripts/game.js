@@ -49,7 +49,7 @@ function Game(){
   }
   this.leftRoom = function(){
     if(this.playerId && this.roomId){
-      this.socket.emit("left_game",{roomId:_this.roomId,playerId:_this.playerId,roomId:this.currentRoom.id});
+      this.socket.emit("left_game",{roomId:_this.roomId,playerId:_this.playerId});
       this.roomId = -1;
       this.gameStatus = "free";
       this.refreshRoomList();

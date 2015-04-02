@@ -44,7 +44,7 @@ $(document).ready(function(){
     $(this).addClass("select");
   });
   $("#back").click(function(){
-    showLobby();
+    showLobby(game);
     game.leftRoom();
   });
   $("#ready").click(function(){
