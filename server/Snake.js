@@ -3,6 +3,7 @@ function Snake(){
   this.index = -1;//房内玩家序号
   this.body = [];//蛇身
   this.direction = "";//朝向
+  this.turn = "";
   this.status = "alive";
   this.eating = false;
 }
@@ -11,7 +12,7 @@ Snake.prototype.move = function(){
     return false;
   }
   this.eating = false;
-  switch(this.direction){
+  switch(this.turn){
     case "up":
       var nextMove = [this.body[0][0],this.body[0][1]];
       nextMove[1]--;
@@ -29,6 +30,7 @@ Snake.prototype.move = function(){
       nextMove[0]++;
       break;
   }
+  this.direction = this.turn; 
   this.body.unshift(nextMove);
 }
 Snake.prototype.init = function(playerId,room){
@@ -40,20 +42,20 @@ Snake.prototype.init = function(playerId,room){
   }
   switch(this.index){
     case "0"://index 是for循环生成的i,所以是字符串
-      this.body = [[4,4],[4,3]];
-      this.direction = "down";
+      this.body = [[4,9],[4,8],[4,7],[4,6],[4,5],[4,4],[4,3]];
+      this.turn = "down";
       break;
     case "1":
       this.body = [[20,20],[20,21]];
-      this.direction = "up";
+      this.turn = "up";
       break;
     case "2":
       this.body = [[20,4],[20,3]];
-      this.direction = "down";
+      this.turn = "down";
       break;
     case "3":
       this.body = [[4,20],[4,21]];
-      this.direction = "up";
+      this.turn = "up";
       break;
   }
 }
@@ -76,16 +78,12 @@ Snake.prototype.eat = function(foods){
   }
   return false;
 }
-Snake.prototype.checkStrike = function(snake,selfHead){
+Snake.prototype.checkStrike = function(snake,isSelf){
   var head = this.body[0];
-  for(var i = 0 ; i < snake.length - 1 ; i ++){
+  for(var i = isSelf?1:0; i < snake.length - 1 ; i ++){
     if(head[0] == snake[i][0] && head[1] == snake[i][1]){
-      if(snake[i][0] == selfHead[0] && snake[i][1] == selfHead[1]){
-        continue;
-      }else{
-        this.status = "dead";
-        return {status:1,playerId:this.playerId,msg:"撞击身体而死"};
-      }
+      this.status = "dead";
+      return {status:1,playerId:this.playerId,msg:"撞击身体而死"};
     }
   }
   return {status:0};

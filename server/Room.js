@@ -36,17 +36,17 @@ Room.prototype.stop = function(playerId,game){
     game.$delRoom(this.id);
   }
 }
-Room.prototype.changeDirection = function(playerId,direction){
+Room.prototype.changeDirection = function(playerId,turn){
   for(var i in this.players){
     if(this.players[i].id == playerId){
       if(this.snakes[i].status == "alive"){
-        if((this.snakes[i].body[1][0] == (this.snakes[i].body[0][0] + 1) && this.snakes[i].direction == "right") ||
-           (this.snakes[i].body[1][0] == (this.snakes[i].body[0][0] - 1) && this.snakes[i].direction == "left") ||
-           (this.snakes[i].body[1][1] == (this.snakes[i].body[0][1] + 1) && this.snakes[i].direction == "down") ||
-           (this.snakes[i].body[1][1] == (this.snakes[i].body[0][1] - 1) && this.snakes[i].direction == "up") 
+        if((turn == "left" && this.snakes[i].direction == "right") ||
+           (turn == "right" && this.snakes[i].direction == "left") ||
+           (turn == "up" && this.snakes[i].direction == "down") ||
+           (turn == "down" && this.snakes[i].direction == "up") 
           )
           return false;
-        this.snakes[i].direction = direction;
+        this.snakes[i].turn = turn;
         return true;
         //snakes的数组序列和players的一一对应
       }
@@ -74,14 +74,14 @@ Room.prototype.tick = function(game){
         game.roomBroadcast(0,"room_msg",{from:"系统",content:"玩家"+game.$player(checkInfo.playerId).name+checkInfo.msg},this.id);
       }
       for(var j in this.snakes){
-        if(this.snakes[j].status == "alive"){
+        if(this.snakes[j].status == "alive" && this.snakes[i].status == "alive"){
           //检查与其他蛇的碰撞,目前是先进房的先移动后判断碰撞,所以有优势
           if(this.snakes[j].playerId == this.snakes[i].playerId){
-            var selfHead = this.snakes[i].body[0];
+            var isSelf = true;
           }else{
-            var selfHead = [-1,-1];
+            var isSelf = false;
           }
-          var strikeInfo = this.snakes[i].checkStrike(this.snakes[j].body,selfHead);
+          var strikeInfo = this.snakes[i].checkStrike(this.snakes[j].body,isSelf);
           if(strikeInfo.status){
             game.roomBroadcast(0,"room_msg",{from:"系统",content:"玩家"+game.$player(strikeInfo.playerId).name+strikeInfo.msg},this.id);
           }
