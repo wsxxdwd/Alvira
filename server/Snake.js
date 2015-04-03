@@ -42,7 +42,7 @@ Snake.prototype.init = function(playerId,room){
   }
   switch(this.index){
     case "0"://index 是for循环生成的i,所以是字符串
-      this.body = [[4,9],[4,8],[4,7],[4,6],[4,5],[4,4],[4,3]];
+      this.body = [[4,4],[4,3]];
       this.turn = "down";
       break;
     case "1":
